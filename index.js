@@ -4,7 +4,6 @@ const {
     GatewayIntentBits
 } = require('discord.js')
 const dotenv = require('dotenv')
-const { jsx } = require('react/jsx-runtime')
 
 if(!process.env.DISCORD_TOKEN || !process.env.AI_TOKEN) dotenv.config()
 
