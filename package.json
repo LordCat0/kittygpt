@@ -1,0 +1,19 @@
+{
+  "name": "kittygpt",
+  "version": "1.0.0",
+  "description": "An AI discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LordCat0/kittygpt.git"
+  },
+  "author": "LordCat0",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LordCat0/kittygpt/issues"
+  },
+  "homepage": "https://github.com/LordCat0/kittygpt#readme"
+}
