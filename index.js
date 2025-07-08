@@ -5,7 +5,7 @@ const {
 } = require('discord.js')
 const dotenv = require('dotenv')
 
-dotenv.config()
+if(!process.env.DISCORD_TOKEN || !process.env.OPENAI_TOKEN) dotenv.config()
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_TOKEN
