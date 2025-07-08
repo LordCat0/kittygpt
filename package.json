@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/LordCat0/kittygpt#readme",
   "dependencies": {
+    "@google/genai": "^1.8.0",
     "discord.js": "^14.21.0",
-    "dotenv": "^17.1.0",
-    "openai": "^5.8.3"
+    "dotenv": "^17.1.0"
   }
 }
