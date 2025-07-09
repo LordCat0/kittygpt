@@ -42,6 +42,7 @@ const parseResponse = (msg, XMLresponse) => {
     }
     if(!json.main) messageFail('Missing XML main element')
     Object.entries(json.main).forEach(async([command, value]) => {
+        console.log(command, (typeof value=="object"?JSON.stringify(value):value)))
         let val = null
         if(value.js){
             val = eval(value.js)
@@ -50,12 +51,10 @@ const parseResponse = (msg, XMLresponse) => {
         }
         switch(command){
             case 'reply':
-                //msg.reply(val)
-                console.log(`Message reply: ${val}, ${value}`)
+                msg.reply(val)
                 break
             case 'message':
-                //msg.channel.send(val)
-                console.log(`Channel send: ${val}, ${value}`)
+                msg.channel.send(val)
                 break
             case 'react':
                 msg.react(val)
