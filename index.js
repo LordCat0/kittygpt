@@ -4,6 +4,7 @@ const {
     GatewayIntentBits
 } = require('discord.js')
 const dotenv = require('dotenv')
+const { XMLParser } = require('fast-xml-parser')
 
 if(!process.env.DISCORD_TOKEN || !process.env.AI_TOKEN) dotenv.config()
 
@@ -25,8 +26,16 @@ const botContext = [
         <message></message> is optional, it will send a message after the main reply.
         <wait></wait> will pause the script for the desired miliseconds.
         <react></react> will react to the message the user sent with the desired emoji.
+        <js></js> will evaluate the desired javascript. You can put this inside of other elements like <reply></reply>.
+        Do not evaluate unsafe code that could expose sensitive information, like fetching from a site or requiring env tokens (like process.env)
     `
 ]
+
+const parseResponse = (msg, XMLresponse) => {
+    const parser = new XMLParser()
+    const json = parser.parse(XMLresponse)
+    msg.reply(JSON.stringify(json))
+}
 
 bot.on('messageCreate', async(message) => {
     if(message.channelId !== '1293397531925155950' || message.guildId !== '1282491315522768939' || message.author.bot) return
@@ -37,7 +46,9 @@ bot.on('messageCreate', async(message) => {
             id: message.author.id,
             nickname: message.author.nickname||message.author.username})}`)}
     })
-    message.reply(response.text)
+    //message.reply(response.text)
+    if(response.text.toLowerCase()==='null') return
+    parseResponse(message, response.text)
 })
 
 bot.login(process.env.DISCORD_TOKEN)
