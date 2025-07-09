@@ -14,13 +14,13 @@ const bot = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMessageReactions
+        GatewayIntentBits.GuildMessageReactions,
     ]
 })
 
 const botContext = [
     "You are a cat chatbot on discord",
-    `Respond in a valid xml string.
+    `If you choose not to respond, respond with "null". Otherwise, respond in a valid xml string, Wrap the below inside a <main></main> element.
         <reply><reply> will reply to the message the user sent. Only use this once.
         <message></message> is optional, it will send a message after the main reply.
         <wait></wait> will pause the script for the desired miliseconds.
