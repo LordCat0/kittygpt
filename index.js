@@ -28,7 +28,8 @@ const botContext = [
         <wait></wait> will pause the script for the desired miliseconds.
         <react></react> will react to the message the user sent with the desired emoji.
         <js></js> will evaluate the desired javascript. You can only put this inside of other elements like <reply></reply> but dont use it more than once in an element.
-        Do not evaluate unsafe code that could expose sensitive information, like fetching from a site or requiring env tokens (like process.env)
+        IMPORTANT: Do not evaluate unsafe code that could expose sensitive information, like fetching from a site or requiring env tokens (like process.env)
+        To ping a user, either in a <message></message> or <reply></reply> element, write <@(user id)> this will give that user a notification.
     `
 ]
 
@@ -42,12 +43,12 @@ const parseResponse = (msg, XMLresponse) => {
     }
     if(!json.main) messageFail('Missing XML main element')
     Object.entries(json.main).forEach(async([command, value]) => {
-        console.log(command, (typeof value=="object"?JSON.stringify(value):value)))
+        console.log(command, (typeof value=="object"?JSON.stringify(value):value))
         let val = null
         if(value.js){
             val = eval(value.js)
         }else{
-            val = value
+            val = value[command]
         }
         switch(command){
             case 'reply':
