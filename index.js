@@ -81,4 +81,4 @@ bot.on('messageCreate', async(message) => {
     parseResponse(message, response.text)
 })
 
-bot.login(process.env.DISCORD_TOKEN)
+bot.login(process.env.DISCORD_TOKEN).then(() => console.log("Bot running"))
