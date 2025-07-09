@@ -50,10 +50,12 @@ const parseResponse = (msg, XMLresponse) => {
         }
         switch(command){
             case 'reply':
-                msg.reply(val)
+                //msg.reply(val)
+                console.log(`Message reply: ${val}, ${value}`)
                 break
             case 'message':
-                msg.channel.send(val)
+                //msg.channel.send(val)
+                console.log(`Channel send: ${val}, ${value}`)
                 break
             case 'react':
                 msg.react(val)
