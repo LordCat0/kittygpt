@@ -5,6 +5,7 @@ const {
 } = require('discord.js')
 const dotenv = require('dotenv')
 const { XMLParser } = require('fast-xml-parser')
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 if(!process.env.DISCORD_TOKEN || !process.env.AI_TOKEN) dotenv.config()
 
@@ -26,7 +27,7 @@ const botContext = [
         <message></message> is optional, it will send a message after the main reply.
         <wait></wait> will pause the script for the desired miliseconds.
         <react></react> will react to the message the user sent with the desired emoji.
-        <js></js> will evaluate the desired javascript. You can put this inside of other elements like <reply></reply>.
+        <js></js> will evaluate the desired javascript. You can only put this inside of other elements like <reply></reply> but dont use it more than once in an element.
         Do not evaluate unsafe code that could expose sensitive information, like fetching from a site or requiring env tokens (like process.env)
     `
 ]
@@ -34,7 +35,36 @@ const botContext = [
 const parseResponse = (msg, XMLresponse) => {
     const parser = new XMLParser()
     const json = parser.parse(XMLresponse)
-    msg.reply(JSON.stringify(json))
+    const messageFail = (err) => {
+        msg.reply(`An error occured while trying to process this message: ${err}`)
+        console.warn(`Failed ai response: ${XMLresponse}`)
+        return
+    }
+    if(!json.main) messageFail('Missing XML main element')
+    Object.entries(json.main).forEach(async([command, value]) => {
+        let val = null
+        if(value.js){
+            val = eval(value.js)
+        }else{
+            val = value
+        }
+        switch(command){
+            case 'reply':
+                msg.reply(val)
+                break
+            case 'message':
+                msg.channel.send(val)
+                break
+            case 'react':
+                msg.react(val)
+                break
+            case 'wait':
+                await sleep(val)
+                break
+            default:
+                messageFail(`Unknown message response call: ${command}`)
+        }
+    })
 }
 
 bot.on('messageCreate', async(message) => {
